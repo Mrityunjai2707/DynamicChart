@@ -1,0 +1,53 @@
+@page
+@using Charts.Services
+@model Charts.Pages.Index
+@inject Buffer<Point> Buffer
+
+@{
+    Layout = null;
+    var chartData = Buffer.Select(x => new { Label = x.Label, Value = x.Value });
+    var maxCapacity = Buffer.MaxCapacity.GetValueOrDefault(10);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Charts with Chart.Js and SignalR</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "chart": "/lib/chartjs/chart.umd.js",
+                "signalr": "/lib/microsoft-signalr/signalr.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div style="width: 400px; height: 400px">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        <script id="data" type="application/json">
+            @Json.Serialize(
+                         new
+                         {
+                             labels = chartData.Select(x => x.Label),
+                             limit = maxCapacity,
+                             url = "/chart",
+                             datasets = new[]
+                             {
+                        new
+                        {
+                            label = "SignalR Dataset",
+                            data = chartData.Select(x => x.Value),
+                            fill = false,
+                            borderColor = "rgb(75, 192, 192)",
+                            tension = 0.1
+                        }
+                    }
+                         })
+        </script>
+    </div>
+    <script defer src="~/js/index.js" type="module"></script>
+</body>
+</html>

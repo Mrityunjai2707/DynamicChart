@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "Chart.js@4.4.1",
+      "destination": "wwwroot/lib/chartjs"
+    },
+    {
+      "library": "microsoft-signalr@8.0.0",
+      "destination": "wwwroot/lib/microsoft-signalr"
+    }
+  ]
+}
